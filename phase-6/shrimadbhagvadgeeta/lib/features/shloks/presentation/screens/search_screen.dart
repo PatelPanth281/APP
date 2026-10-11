@@ -179,45 +179,63 @@ class _SearchBar extends StatelessWidget {
 // Idle state — prompt to type
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _IdleState extends StatelessWidget {
-  const _IdleState();
+class _SearchingState extends StatelessWidget {
+  const _SearchingState();
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final shimmer = scheme.onSurface.withValues(alpha: 0.06);
 
-    return Center(
-      child: Padding(
-        padding: AppEdgeInsets.page,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+    return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
+      ),
+      itemCount: 6,
+      separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+      itemBuilder: (_, __) => SectionContainer(
+        tier: SurfaceTier.low,
+        borderRadius: AppRadius.mdBorder,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.md,
+        ),
+        child: Row(
           children: [
-            Text(
-              'खोज',
-              style: AppTypography.sanskritDisplay.copyWith(
-                color: scheme.onSurface.withValues(alpha: 0.10),
-                fontSize: 60,
-                height: 1.0,
+            Container(
+              width: 36,
+              height: 20,
+              decoration: BoxDecoration(
+                color: shimmer,
+                borderRadius: AppRadius.smBorder,
               ),
             ),
-            const SizedBox(height: AppSpacing.xl),
-            Text(
-              'Search the Gita',
-              style: AppTypography.headlineSmall.copyWith(
-                color: scheme.onSurface,
-                fontSize: 20,
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 14,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: shimmer,
+                      borderRadius: AppRadius.smBorder,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    width: 160,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: shimmer.withValues(alpha: 0.04),
+                      borderRadius: AppRadius.smBorder,
+                    ),
+                  ),
+                ],
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Type a word, verse number, or phrase\nto search across all 700 verses.',
-              style: AppTypography.caption.copyWith(
-                color: scheme.secondary,
-                height: 1.8,
-                letterSpacing: 0.3,
-              ),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
